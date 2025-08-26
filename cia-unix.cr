@@ -37,7 +37,10 @@ def download_dep
     if ["y", "Y"].includes? gets.to_s
         system "./dltools.sh"
     else
-        exit
+        print "No tools were downloaded. Continue? (y/n): "
+        if (gets.to_s.chomp.downcase == "n")
+            exit
+        end
     end
 end
 
