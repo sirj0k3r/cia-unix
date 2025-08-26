@@ -3,6 +3,10 @@ require "colorize"
 LOG = File.new "cia-unix.log", "w"
 LOG.puts Time.utc.to_s
 
+dir = ARGV.size > 0 && Dir.exists?(ARGV[0]) ? ARGV[0] : "."
+
+print "Scanning #{dir}\n"
+
 # dependencies check
 tools = ["./ctrtool", "./ctrdecrypt", "./makerom", "seeddb.bin"]
 tools.each do |tool|
@@ -30,7 +34,7 @@ def download_dep
 end
 
 # roms presence check
-if Dir["*.cia"].size.zero? && Dir["*.3ds"].size.zero?
+if Dir["#{dir}/*.cia"].size.zero? && Dir["#{dir}/*.3ds"].size.zero?
     LOG.delete if File.exists? "cia-unix.log"
     abort "No #{"CIA".colorize.mode(:bold)}/#{"3DS".colorize.mode(:bold)} roms were found."
 end
@@ -63,14 +67,14 @@ def gen_args(name : String, part_count : Int32) : Array(String)
 end
 
 # cache cleanup
-def remove_cache
+def remove_cache(dir : String)
     puts "Removing cache..."
-    Dir["*-decfirst.cia"].each do |fname| File.delete(fname) end
-    Dir["*.ncch"].each do |fname| File.delete(fname) end
+    Dir["#{dir}/*-decfirst.cia"].each do |fname| File.delete(fname) end
+    Dir["#{dir}/*.ncch"].each do |fname| File.delete(fname) end
 end
 
 # 3ds decrypting
-Dir["*.3ds"].each do |ds|
+Dir["#{dir}/*.3ds"].each do |ds|
     next if ds.includes? "decrypted"
 
     i : UInt8 = 0
@@ -104,11 +108,11 @@ Dir["*.3ds"].each do |ds|
     puts "Building decrypted #{dsn} 3DS..."
     run_tool("makerom", args)
     check_decrypt(dsn, "3ds")
-    remove_cache
+    remove_cache(dir)
 end
 
 # cia decrypting
-Dir["*.cia"].each do |cia|
+Dir["#{dir}/*.cia"].each do |cia|
     next if cia.includes? "decrypted"
 
     puts "Decrypting: #{cia.colorize.mode(:bold)}..."
@@ -153,7 +157,7 @@ Dir["*.cia"].each do |cia|
         puts "Unsupported CIA"
     end
 
-    Dir["*-decfirst.cia"].each do |decfirst|
+    Dir["#{dir}/*-decfirst.cia"].each do |decfirst|
         cutn = decfirst.chomp "-decfirst.cia"
     
         puts "Building decrypted #{cutn} CCI..."
@@ -161,7 +165,7 @@ Dir["*.cia"].each do |cia|
         check_decrypt(cutn, "cci")
     end
 
-    remove_cache
+    remove_cache(dir)
 end
 
 LOG.flush

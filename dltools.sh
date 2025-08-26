@@ -12,30 +12,30 @@ MAKEROM_VER=0.18.4
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # Apple Silicon
     echo " * Downloading ${BOLD}ctrdecrypt${NORMAL}"
-    wget "https://github.com/shijimasoft/ctrdecrypt/releases/download/v${CTRDECRYPT_VER}/ctrdecrypt-macos-universal.zip" -q
+    curl "https://github.com/shijimasoft/ctrdecrypt/releases/download/v${CTRDECRYPT_VER}/ctrdecrypt-macos-universal.zip" -o .
     echo " * Extracting ${BOLD}ctrdecrypt${NORMAL}"
     unzip -qq "ctrdecrypt-macos-universal.zip" -d "ctrdecrypt-macos-universal"
     mv "ctrdecrypt-macos-universal/ctrdecrypt" "${SCRIPT_DIR}/ctrdecrypt"
     if [[ $(uname -m) == 'arm64' ]]; then
         echo " * Downloading ${BOLD}ctrtool${NORMAL}"
-        wget "https://github.com/3DSGuy/Project_CTR/releases/download/ctrtool-v${CTRTOOL_VER}/ctrtool-v${CTRTOOL_VER}-macos_arm64.zip" -q
+        curl "https://github.com/3DSGuy/Project_CTR/releases/download/ctrtool-v${CTRTOOL_VER}/ctrtool-v${CTRTOOL_VER}-macos_arm64.zip" -o .
         echo " * Extracting ${BOLD}ctrtool${NORMAL}"
         unzip -qq "ctrtool-v${CTRTOOL_VER}-macos_arm64.zip" -d "ctrtool-v${CTRTOOL_VER}-macos_arm64"
         mv "ctrtool-v${CTRTOOL_VER}-macos_arm64/ctrtool" "${SCRIPT_DIR}/ctrtool"
         echo " * Downloading ${BOLD}makerom${NORMAL}"
-        wget "https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v${MAKEROM_VER}/makerom-v${MAKEROM_VER}-macos_arm64.zip" -q
+        curl "https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v${MAKEROM_VER}/makerom-v${MAKEROM_VER}-macos_arm64.zip" -o .
         echo " * Extracting ${BOLD}makerom${NORMAL}"
         unzip -qq "makerom-v${MAKEROM_VER}-macos_arm64.zip" -d "makerom-v${MAKEROM_VER}-macos_arm64"
         mv "makerom-v${MAKEROM_VER}-macos_arm64/makerom" "${SCRIPT_DIR}/makerom"
     # x86_64
     else
         echo " * Downloading ${BOLD}ctrtool${NORMAL}"
-        wget "https://github.com/3DSGuy/Project_CTR/releases/download/ctrtool-v${CTRTOOL_VER}/ctrtool-v${CTRTOOL_VER}-macos_x86_64.zip" -q
+        curl "https://github.com/3DSGuy/Project_CTR/releases/download/ctrtool-v${CTRTOOL_VER}/ctrtool-v${CTRTOOL_VER}-macos_x86_64.zip" -o .
         echo " * Extracting ${BOLD}ctrtool${NORMAL}"
         unzip -qq "ctrtool-v${CTRTOOL_VER}-macos_x86_64.zip" -d "ctrtool-v${CTRTOOL_VER}-macos_x86_64"
         mv "ctrtool-v${CTRTOOL_VER}-macos_x86_64/ctrtool" "${SCRIPT_DIR}/ctrtool"
         echo " * Downloading ${BOLD}makerom${NORMAL}"
-        wget "https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v${MAKEROM_VER}/makerom-v${MAKEROM_VER}-macos_x86_64.zip" -q
+        curl "https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v${MAKEROM_VER}/makerom-v${MAKEROM_VER}-macos_x86_64.zip" -o .
         echo " * Extracting ${BOLD}makerom${NORMAL}"
         unzip -qq "makerom-v${MAKEROM_VER}-macos_x86_64.zip" -d "makerom-v${MAKEROM_VER}-macos_x86_64"
         mv "makerom-v${MAKEROM_VER}-macos_x86_64/makerom" "${SCRIPT_DIR}/makerom"
