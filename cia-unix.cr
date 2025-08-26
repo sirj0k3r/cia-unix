@@ -3,9 +3,15 @@ require "colorize"
 LOG = File.new "cia-unix.log", "w"
 LOG.puts Time.utc.to_s
 
-dir = ARGV.size > 0 && Dir.exists?(ARGV[0]) ? ARGV[0] : "."
+dir = "."
 
-print "Scanning #{dir}\n"
+if ARGV.size > 0
+    if Dir.exists?(ARGV[0])
+        dir = "\"#{File.expand_path(ARGV[0])}\""
+    else
+        print "#{File.expand_path(ARGV[0]).colorize(:yellow)} does not exist.\nDefaulting to #{File.expand_path(dir).colorize(:green)}\n\n"
+    end
+end
 
 # dependencies check
 tools = ["./ctrtool", "./ctrdecrypt", "./makerom", "seeddb.bin"]
@@ -30,7 +36,9 @@ def download_dep
     print "Some #{"tools".colorize.mode(:bold)} are missing, do you want to download them? (y/n): "
     if ["y", "Y"].includes? gets.to_s
         system "./dltools.sh"
-    end 
+    else
+        exit
+    end
 end
 
 # roms presence check
